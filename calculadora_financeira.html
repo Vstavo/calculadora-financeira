@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Maturação de Whisky</title>
+</head>
+
+<body>
+
+<h2>Simulador de Maturação de Whisky</h2>
+
+Temperatura média (°C):
+<input type="number" id="input_temp"><br><br>
+
+Tempo de maturação (anos):
+<input type="number" id="input_tempo"><br><br>
+
+Volume inicial (litros):
+<input type="number" id="input_volume"><br><br>
+
+Taxa de evaporação (% ao ano):
+<input type="number" id="input_taxa"><br><br>
+
+Valor por litro (R$):
+<input type="number" id="input_valor"><br><br>
+
+Umidade do ambiente (%):
+<input type="number" id="input_umidade"><br><br>
+
+<button onclick="calcular()">Calcular resultado</button>
+
+<div id="div_resultado"></div>
+<div id="div_mensagem"></div>
+
+</body>
+</html>
+
+<script>
+
+function calcular(){
+
+let temp = Number(input_temp.value);
+let tempo = Number(input_tempo.value);
+let volume = Number(input_volume.value);
+let taxa = Number(input_taxa.value);
+let valor = Number(input_valor.value);
+let umidade = Number(input_umidade.value);
+
+let perda = volume * (taxa/100) * tempo;
+let volume_final = volume - perda;
+
+let valor_inicial = volume * valor;
+let valor_final = volume_final * valor;
+
+let msg_temp = "";
+let msg_umidade = "";
+
+/* temperatura */
+
+if(temp >= 15 && temp <= 20){
+    msg_temp = "Temperatura ideal para maturação.<br>";
+}
+else if(temp > 30 || temp < 10){
+    msg_temp = "Temperatura ruim, maturação prejudicada.<br>";
+}
+else{
+    msg_temp = "Temperatura aceitável.<br>";
+}
+
+/* umidade */
+
+if(umidade >= 55 && umidade <= 70){
+    msg_umidade = "Umidade moderada, evaporação equilibrada.<br>";
+}
+else if(umidade < 55){
+    msg_umidade = "Umidade baixa, evapora mais água e aumenta o teor alcoólico.<br>";
+}
+else{
+    msg_umidade = "Umidade alta, evapora mais álcool e diminui o teor alcoólico.<br>";
+}
+
+div_resultado.innerHTML = `
+Valor inicial do barril: R$ ${valor_inicial.toFixed(2)} <br>
+Volume final após ${tempo} anos: ${volume_final.toFixed(2)} L <br>
+Valor final estimado: R$ ${valor_final.toFixed(2)} <br>
+Perda total por evaporação: ${perda.toFixed(2)} L
+`;
+
+div_mensagem.innerHTML = msg_temp + msg_umidade;
+
+}
+
+</script>
